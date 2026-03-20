@@ -1,0 +1,20 @@
+{
+  "name": "tp2",
+  "version": "1.0.0",
+  "description": "TP2 ESKENAZI,TROSMAN,DUEÑAZ",
+  "homepage": "https://github.com/Eske555/TP2-DAI#readme",
+  "bugs": {
+    "url": "https://github.com/Eske555/TP2-DAI/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eske555/TP2-DAI.git"
+  },
+  "license": "ISC",
+  "author": "Trosman",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
