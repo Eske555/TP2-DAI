@@ -1,87 +1,92 @@
 import axios from "axios";
 
-const APIKEY = "928dae35"; 
+const APIKEY = "928dae35";
 
-const OMDBSearchByPage = async (searchText, page = 1) => {
+const OMDBSearchByPage = async (textoBusqueda, pagina = 1) => {
 
-  let returnObject = {
+  const resultado = {
     respuesta: false,
     cantidadTotal: 0,
     datos: []
   };
 
   try {
-    const url = `http://www.omdbapi.com/?apikey=${APIKEY}&s=${searchText}&page=${page}`;
-    const response = await axios.get(url);
+    const endpoint = `http://www.omdbapi.com/?apikey=${APIKEY}&s=${textoBusqueda}&page=${pagina}`;
+    const { data } = await axios.get(endpoint);
 
-    if (response.data.Response === "True") {
-      returnObject.respuesta = true;
-      returnObject.cantidadTotal = Number(response.data.totalResults);
-      returnObject.datos = response.data.Search;
+    if (data.Response === "True") {
+      resultado.respuesta = true;
+      resultado.cantidadTotal = parseInt(data.totalResults);
+      resultado.datos = data.Search;
     }
 
   } catch {
   }
 
-  return returnObject;
+  return resultado;
 };
 
 
-const OMDBSearchComplete = async (searchText) => {
+const OMDBSearchComplete = async (textoBusqueda) => {
 
-  let returnObject = {
+  const resultado = {
     respuesta: false,
     cantidadTotal: 0,
     datos: []
   };
 
   try {
-    const firstCall = await OMDBSearchByPage(searchText, 1);
+    const primeraPagina = await OMDBSearchByPage(textoBusqueda);
 
-    if (!firstCall.respuesta) return returnObject;
+    if (!primeraPagina.respuesta) return resultado;
 
-    returnObject.respuesta = true;
-    returnObject.cantidadTotal = firstCall.cantidadTotal;
-    returnObject.datos = [...firstCall.datos];
+    resultado.respuesta = true;
+    resultado.cantidadTotal = primeraPagina.cantidadTotal;
+    resultado.datos = [...primeraPagina.datos];
 
-    const totalPages = Math.ceil(firstCall.cantidadTotal / 10);
+    const paginasTotales = Math.ceil(primeraPagina.cantidadTotal / 10);
 
-    for (let i = 2; i <= totalPages; i++) {
-      const pageData = await OMDBSearchByPage(searchText, i);
-      returnObject.datos.push(...pageData.datos);
+    let paginaActual = 2;
+
+    while (paginaActual <= paginasTotales) {
+      const infoPagina = await OMDBSearchByPage(textoBusqueda, paginaActual);
+
+      if (infoPagina.datos.length > 0) {
+        resultado.datos.push(...infoPagina.datos);
+      }
+
+      paginaActual++;
     }
 
   } catch {
-    returnObject.respuesta = false;
   }
 
-  return returnObject;
+  return resultado;
 };
 
 
-const OMDBGetByImdbID = async (imdbID) => {
+const OMDBGetByImdbID = async (id) => {
 
-  let returnObject = {
+  const resultado = {
     respuesta: false,
     cantidadTotal: 0,
     datos: {}
   };
 
   try {
-    const url = `http://www.omdbapi.com/?apikey=${APIKEY}&i=${imdbID}`;
-    const response = await axios.get(url);
+    const endpoint = `http://www.omdbapi.com/?apikey=${APIKEY}&i=${id}`;
+    const { data } = await axios.get(endpoint);
 
-    if (response.data.Response === "True") {
-      returnObject.respuesta = true;
-      returnObject.cantidadTotal = 1;
-      returnObject.datos = response.data;
+    if (data.Response === "True") {
+      resultado.respuesta = true;
+      resultado.cantidadTotal = 1;
+      resultado.datos = data;
     }
 
   } catch {
-    returnObject.respuesta = false;
   }
 
-  return returnObject;
+  return resultado;
 };
 
 

@@ -4,13 +4,13 @@ import {
   OMDBGetByImdbID
 } from "./modules/omdb-wrapper.js";
 
-let muestra;
+let resultado;
 
-muestra = await OMDBSearchByPage("cars", 1);
-console.log("SearchByPage:", muestra);
+resultado = await OMDBSearchByPage("cars", 1);
+console.log("SearchByPage:", resultado);
 
-muestra = await OMDBSearchComplete("cars");
-console.log("SearchComplete:", muestra);
+resultado = await OMDBSearchComplete("cars");
+console.log("SearchComplete:", resultado);
 
-muestra = await OMDBGetByImdbID("tt0317219");
-console.log("GetByID:", muestra);
+resultado = await OMDBGetByImdbID("tt0317219");
+console.log("GetByID:", resultado);

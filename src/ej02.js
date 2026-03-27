@@ -7,7 +7,7 @@ let numero2=20;
 
 console.clear();
 
-console.log(`La constante PI vale '${PI}'`);        // Uso la constante PI importada.
+console.log(`La constante PI vale '${PI}'`);        //constante PI importada
 
 
 let totalsuma = sumar(numero1, numero2);                      
