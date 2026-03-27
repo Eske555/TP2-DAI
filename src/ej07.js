@@ -1,31 +1,26 @@
-import { getCountry, getCurrency } from 'currency-map-country';
+import { getCountryByAbbreviation, getCurrencyAbbreviation } from "country-currency-map";
 
-let monedaDelPais, codigoPais;
+let codigo, moneda;
 
-codigoPais = 'AR';
+codigo = 'AR';
+moneda = obtenerCodigoMoneda(codigo);
+console.log(`La moneda del país ${codigo} es: ${moneda}`);
 
-monedaDelPais = obtenerMoneda(codigoPais);
+codigo = 'UZA';
+moneda = obtenerCodigoMoneda(codigo);
+console.log(`La moneda del país ${codigo} es: ${moneda}`);
 
-console.log(`La moneda del país ${codigoPais} es: ${monedaDelPais}`);
+function obtenerCodigoMoneda(paisCod) {
+  try {
+    const pais = getCountryByAbbreviation(paisCod);
 
+    if (!pais) return null;
 
-codigoPais = 'UZA';
+    const monedaPais = getCurrencyAbbreviation(pais);
 
-monedaDelPais = obtenerMoneda(codigoPais);
+    return monedaPais ? monedaPais : null;
 
-console.log(`La moneda del país ${codigoPais} es: ${monedaDelPais}`);
-
-function obtenerMoneda(codigoPais) {
-    try {
-        const pais = getCountry(codigoPais);
-
-        if (!pais) return null;
-
-        const moneda = getCurrency(pais);
-
-        return moneda || null;
-
-    } catch (error) {
-        return null;
-    }
+  } catch {
+    return null;
+  }
 }
